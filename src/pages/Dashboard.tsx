@@ -13,15 +13,15 @@ function Pill({
   variant?: 'default' | 'success' | 'warn' | 'danger';
 }) {
   const map = {
-    default: 'bg-slate-800 text-slate-400 border-slate-700',
-    success: 'bg-emerald-950/60 text-emerald-400 border-emerald-800/50',
-    warn:    'bg-amber-950/60  text-amber-400  border-amber-800/50',
-    danger:  'bg-red-950/60    text-red-400    border-red-800/50',
+    default: 'bg-slate-100/10 text-slate-300 border-slate-700/40',
+    success: 'bg-emerald-500/10 text-emerald-300 border-emerald-600/30',
+    warn:    'bg-amber-500/10 text-amber-300 border-amber-600/30',
+    danger:  'bg-red-500/10 text-red-300 border-red-600/30',
   } as const;
   return (
     <span
       className={cls(
-        'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-mono rounded-full border whitespace-nowrap',
+        'inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-medium rounded-md border whitespace-nowrap tracking-wide',
         map[variant],
       )}
     >
@@ -44,19 +44,19 @@ function CopyButton({ text, label }: { text: string; label: string }) {
     <button
       onClick={copy}
       aria-label={`Copy ${label}`}
-      className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 flex items-center justify-center gap-1
-                 text-xs font-mono text-slate-600 hover:text-cyan-400 transition-all duration-200"
+      className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 flex items-center justify-center gap-2
+                 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors duration-200"
     >
       {state === 'copied' ? (
         <>
-          <svg className="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
           <span className="text-emerald-400 hidden sm:inline">Copied</span>
         </>
       ) : (
         <>
-          <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
@@ -91,17 +91,19 @@ function StatCard({
 }) {
   return (
     <div className={cls(
-      'relative rounded-2xl border p-4 sm:p-5 transition-all duration-300',
-      'hover:border-slate-600 hover:-translate-y-0.5 active:scale-[0.98]',
-      accent ? 'bg-cyan-950/20 border-cyan-800/40' : 'bg-slate-900/60 border-slate-800',
+      'relative rounded-lg border p-5 transition-all duration-200',
+      'hover:shadow-lg hover:shadow-slate-900/50',
+      accent 
+        ? 'bg-gradient-to-br from-slate-800/40 to-slate-900/60 border-slate-700/60' 
+        : 'bg-slate-900/40 border-slate-800/60 backdrop-blur-sm',
     )}>
-      <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500 mb-2 sm:mb-3">
+      <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400 mb-3">
         {label}
       </p>
-      <p className={cls('font-mono font-semibold text-lg sm:text-xl truncate', accent ? 'text-cyan-300' : 'text-white')}>
+      <p className={cls('font-semibold text-xl leading-tight', accent ? 'text-white' : 'text-slate-100')}>
         {value}
       </p>
-      {sub && <p className="mt-1 text-[10px] font-mono text-slate-600 truncate">{sub}</p>}
+      {sub && <p className="mt-2 text-xs text-slate-500">{sub}</p>}
     </div>
   );
 }
@@ -110,16 +112,17 @@ function StatCard({
 function GridBg() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
-      <svg width="100%" height="100%" className="absolute inset-0 opacity-[0.025]">
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl" />
+      <svg className="absolute inset-0 w-full h-full opacity-[0.02]">
         <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#67e8f9" strokeWidth="0.5" />
+          <pattern id="grid-pattern" width="32" height="32" patternUnits="userSpaceOnUse">
+            <path d="M 32 0 L 0 0 0 32" fill="none" stroke="white" strokeWidth="0.5" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill="url(#grid-pattern)" />
       </svg>
-      <div className="absolute -top-40 -left-40 w-100 sm:w-150 h-100 sm:h-150 bg-cyan-500/5 rounded-full blur-[100px] sm:blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-100 sm:w-150 h-100 sm:h-150 bg-violet-600/5 rounded-full blur-[80px] sm:blur-[100px]" />
     </div>
   );
 }
@@ -131,30 +134,37 @@ function TokenField({ token }: { token: string | null }) {
   const preview = token
     ? visible
       ? token
-      : `${token.slice(0, 16)}${'·'.repeat(16)}${token.slice(-6)}`
+      : `${token.slice(0, 16)}${'•'.repeat(16)}${token.slice(-6)}`
     : '—';
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden hover:border-slate-700 transition-colors">
-      <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-slate-800 gap-2 flex-wrap">
-        <div className="flex items-center gap-2 min-w-0">
-          <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-          </svg>
-          <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-500 truncate">
-            ID Token (JWT)
-          </span>
+    <div className="rounded-lg border border-slate-800/60 bg-slate-900/40 backdrop-blur-sm overflow-hidden 
+                    hover:border-slate-700/60 hover:shadow-lg hover:shadow-slate-900/50 transition-all duration-200">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/60 gap-2 flex-wrap">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+            <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-slate-200">
+              ID Token (JWT)
+            </p>
+            <p className="text-xs text-slate-500 mt-0.5">Authentication credential</p>
+          </div>
           <Pill variant="success">
-            <span className="w-1 h-1 rounded-full bg-emerald-400 inline-block animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
             Valid
           </Pill>
         </div>
-        <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => setVisible(v => !v)}
-            className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 flex items-center justify-center
-                       text-xs font-mono text-slate-500 hover:text-white transition-colors px-1"
+            className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 px-3 py-1.5 rounded-md
+                       text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50
+                       transition-colors border border-slate-800/60"
           >
             {visible ? 'Hide' : 'Reveal'}
           </button>
@@ -162,18 +172,19 @@ function TokenField({ token }: { token: string | null }) {
         </div>
       </div>
 
-      <div className="px-4 sm:px-5 py-4 bg-slate-950/40 overflow-x-auto">
-        <p className="font-mono text-[11px] sm:text-xs text-cyan-400/70 break-all leading-relaxed tracking-wide">
+      <div className="px-5 py-5 bg-slate-950/60 overflow-x-auto">
+        <p className="font-mono text-xs text-slate-300 break-all leading-relaxed">
           {preview}
         </p>
       </div>
 
-      <div className="px-4 sm:px-5 py-2.5 border-t border-slate-800 bg-slate-900/30">
-        <p className="text-[10px] sm:text-[11px] font-mono text-slate-600 truncate">
-          Stored in{' '}
-          <code className="text-slate-500 bg-slate-800/60 px-1 py-0.5 rounded text-[10px]">
-            localStorage['secure_auth_token']
-          </code>
+      <div className="px-5 py-3 border-t border-slate-800/60 bg-slate-900/30">
+        <p className="text-xs text-slate-500 flex items-center gap-2">
+          <svg className="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+              d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+          </svg>
+          Stored in localStorage['secure_auth_token']
         </p>
       </div>
     </div>
@@ -183,33 +194,39 @@ function TokenField({ token }: { token: string | null }) {
 /* ─── Activity timeline ──────────────────────────────────────── */
 const EVENTS = [
   { time: 'Just now',  label: 'Authenticated via Firebase Phone', color: 'bg-emerald-400' },
-  { time: '2 min ago', label: 'OTP verified successfully',        color: 'bg-cyan-400' },
+  { time: '2 min ago', label: 'OTP verified successfully',        color: 'bg-blue-400' },
   { time: '4 min ago', label: 'Session token issued',             color: 'bg-violet-400' },
   { time: '9 min ago', label: 'Phone number confirmed',           color: 'bg-slate-500' },
 ];
 
 function Timeline() {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden hover:border-slate-700 transition-colors">
-      <div className="px-4 sm:px-5 py-3 border-b border-slate-800 flex items-center gap-2">
-        <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500">Recent Activity</span>
+    <div className="rounded-lg border border-slate-800/60 bg-slate-900/40 backdrop-blur-sm overflow-hidden 
+                    hover:border-slate-700/60 hover:shadow-lg hover:shadow-slate-900/50 transition-all duration-200">
+      <div className="px-5 py-4 border-b border-slate-800/60 flex items-center gap-3">
+        <div className="w-9 h-9 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+          <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-sm font-medium text-slate-200">Recent Activity</p>
+          <p className="text-xs text-slate-500 mt-0.5">Session events log</p>
+        </div>
       </div>
-      <ul className="divide-y divide-slate-800/60">
+      <ul className="divide-y divide-slate-800/40">
         {EVENTS.map((e, i) => (
-          <li key={i} className="flex items-start gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-3.5">
-            <div className="mt-1.5 shrink-0 flex flex-col items-center">
-              <span className={cls('w-2 h-2 rounded-full', e.color, i === 0 ? 'animate-pulse' : '')} />
+          <li key={i} className="flex items-start gap-4 px-5 py-4">
+            <div className="mt-1 shrink-0 flex flex-col items-center">
+              <span className={cls('w-2 h-2 rounded-full', e.color)} />
               {i < EVENTS.length - 1 && (
-                <span className="w-px bg-slate-800 mt-1.5 min-h-3.5 flex-1" />
+                <span className="w-0.5 bg-slate-800/60 mt-2 min-h-4 flex-1" />
               )}
             </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-slate-300 font-mono leading-snug">{e.label}</p>
-              <p className="text-[10px] sm:text-xs text-slate-600 font-mono mt-0.5">{e.time}</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-slate-200 leading-snug">{e.label}</p>
+              <p className="text-xs text-slate-500 mt-1">{e.time}</p>
             </div>
           </li>
         ))}
@@ -227,29 +244,35 @@ const ACTIONS = [
 
 function QuickActions() {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden hover:border-slate-700 transition-colors">
-      <div className="px-4 sm:px-5 py-3 border-b border-slate-800 flex items-center gap-2">
-        <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500">Quick Actions</span>
+    <div className="rounded-lg border border-slate-800/60 bg-slate-900/40 backdrop-blur-sm overflow-hidden 
+                    hover:border-slate-700/60 hover:shadow-lg hover:shadow-slate-900/50 transition-all duration-200">
+      <div className="px-5 py-4 border-b border-slate-800/60 flex items-center gap-3">
+        <div className="w-9 h-9 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+          <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-sm font-medium text-slate-200">Quick Actions</p>
+          <p className="text-xs text-slate-500 mt-0.5">Manage your session</p>
+        </div>
       </div>
-      <div className="p-2 sm:p-3 space-y-2">
+      <div className="p-4 space-y-2">
         {ACTIONS.map(({ icon, label, sub, danger }) => (
           <button
             key={label}
             className={cls(
-              'w-full flex items-center gap-3 px-3 sm:px-4 py-3 rounded-xl text-left font-mono',
-              'border transition-all duration-200 active:scale-[0.98] min-h-13',
+              'w-full flex items-center gap-3 px-4 py-3.5 rounded-lg text-left',
+              'border transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-14',
               danger
-                ? 'border-red-900/40 bg-red-950/10 hover:bg-red-950/30 hover:border-red-800/50 text-red-400'
-                : 'border-slate-800 bg-slate-800/30 hover:bg-slate-800 hover:border-slate-700 text-slate-300',
+                ? 'border-red-900/40 bg-red-950/20 hover:bg-red-950/30 hover:border-red-800/50 text-red-300'
+                : 'border-slate-800/60 bg-slate-800/20 hover:bg-slate-800/40 hover:border-slate-700/60 text-slate-200',
             )}
           >
-            <span className="text-base shrink-0">{icon}</span>
+            <span className="text-xl shrink-0">{icon}</span>
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm leading-tight truncate">{label}</p>
-              <p className="text-[10px] text-slate-600 mt-0.5 truncate">{sub}</p>
+              <p className="text-sm font-medium leading-tight">{label}</p>
+              <p className="text-xs text-slate-500 mt-1">{sub}</p>
             </div>
           </button>
         ))}
@@ -272,45 +295,48 @@ const Dashboard: React.FC = () => {
     .toUpperCase();
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-white font-['JetBrains_Mono','Fira_Code',monospace] antialiased">
+    <div className="min-h-screen bg-slate-950 text-slate-100 antialiased">
       <GridBg />
 
       {/* ── Sticky Header ── */}
-      <header className="relative z-10  top-0 border-b border-slate-800/80 backdrop-blur-sm bg-slate-950/40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <header className="relative z-10 sticky top-0 border-b border-slate-800/60 backdrop-blur-xl bg-slate-950/80">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="w-7 h-7 shrink-0 rounded-lg bg-cyan-400/10 border border-cyan-400/25 flex items-center justify-center">
-              <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 shrink-0 rounded-lg bg-gradient-to-br from-blue-500/20 to-violet-500/20 
+                            border border-slate-700/50 flex items-center justify-center">
+              <svg className="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <span className="text-sm font-semibold tracking-tight text-white">SecureAuth</span>
-            <span className="hidden sm:block text-slate-700 text-xs">/ dashboard</span>
+            <div>
+              <span className="text-base font-semibold tracking-tight text-white">SecureAuth</span>
+              <span className="hidden sm:inline text-slate-600 text-sm ml-2">/ Dashboard</span>
+            </div>
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* Status pill — short label on mobile */}
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-mono
-                             rounded-full border bg-emerald-950/60 text-emerald-400 border-emerald-800/50 whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Status pill */}
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium
+                             rounded-md border bg-emerald-500/10 text-emerald-300 border-emerald-600/30 whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span className="hidden sm:inline">Authenticated</span>
-              <span className="sm:hidden">Live</span>
+              <span className="sm:hidden">Active</span>
             </span>
 
-            {/* Sign out — icon only on mobile */}
+            {/* Sign out */}
             <button
               onClick={signOut}
               aria-label="Sign out"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 min-h-9
-                         text-xs font-mono text-slate-400 border border-slate-800 rounded-lg
-                         hover:bg-slate-800 hover:text-white hover:border-slate-700
-                         transition-all duration-200 active:scale-95"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 min-h-9
+                         text-xs font-medium text-slate-300 border border-slate-800/60 rounded-lg
+                         hover:bg-slate-800/40 hover:text-white hover:border-slate-700/60
+                         transition-all duration-200"
             >
-              <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
@@ -321,30 +347,31 @@ const Dashboard: React.FC = () => {
       </header>
 
       {/* ── Page content ── */}
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-5 sm:space-y-8">
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-6 sm:space-y-8">
 
         {/* Hero */}
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.2em] text-slate-600 mb-1.5 sm:mb-2">
+            <p className="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">
               Welcome back
             </p>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight truncate">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               {displayName}
             </h1>
-            <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-mono text-slate-500">
+            <p className="mt-2 text-sm text-slate-400 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               Session active · Firebase Phone Auth
             </p>
           </div>
-          <div className="shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl
-                          bg-linear-to-br from-cyan-500/20 to-violet-500/20 border border-slate-700
-                          flex items-center justify-center text-base sm:text-lg font-semibold text-white">
+          <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl
+                          bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-slate-700/50
+                          flex items-center justify-center text-lg sm:text-xl font-semibold text-white shadow-lg">
             {initials}
           </div>
         </div>
 
-        {/* Stats — 2 cols mobile, 4 cols sm+ */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <StatCard label="Provider"    value="Firebase"           sub="Phone Auth"  />
           <StatCard label="Status"      value="Active"             sub="Token valid" accent />
           <StatCard label="Auth events" value={<CountUp to={4} />} sub="This session" />
@@ -352,26 +379,32 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* UID */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-slate-800">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-slate-500">User UID</span>
+        <div className="rounded-lg border border-slate-800/60 bg-slate-900/40 backdrop-blur-sm overflow-hidden 
+                        hover:border-slate-700/60 hover:shadow-lg hover:shadow-slate-900/50 transition-all duration-200">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/60">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-200">User UID</p>
+                <p className="text-xs text-slate-500 mt-0.5">Unique identifier</p>
+              </div>
             </div>
             <CopyButton text={uid} label="UID" />
           </div>
-          <div className="px-4 sm:px-5 py-4 overflow-x-auto">
-            <p className="font-mono text-xs sm:text-sm text-white break-all">{uid}</p>
+          <div className="px-5 py-5 overflow-x-auto bg-slate-950/60">
+            <p className="font-mono text-sm text-slate-300 break-all">{uid}</p>
           </div>
         </div>
 
         {/* Token */}
         <TokenField token={token} />
 
-        {/* Bottom grid — stacks on mobile */}
+        {/* Bottom grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           <Timeline />
           <QuickActions />
@@ -379,11 +412,11 @@ const Dashboard: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6 border-t border-slate-800/50">
-        <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1">
-          <p className="text-[10px] sm:text-[11px] font-mono text-slate-700">SecureAuth · Firebase Auth SDK</p>
-          <p className="text-[10px] sm:text-[11px] font-mono text-slate-700">
-            {new Date().toLocaleDateString('en-IN', { dateStyle: 'medium' })}
+      <footer className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-800/50">
+        <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
+          <p className="text-xs text-slate-600">SecureAuth · Powered by Firebase Authentication SDK</p>
+          <p className="text-xs text-slate-600">
+            {new Date().toLocaleDateString('en-IN', { dateStyle: 'long' })}
           </p>
         </div>
       </footer>

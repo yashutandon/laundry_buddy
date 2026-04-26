@@ -43,24 +43,23 @@ const PhoneStep: React.FC<PhoneStepProps> = ({
   const selected = COUNTRY_CODES.find(c => c.code === selectedCode)!;
 
   return (
-    <div className="animate-slide-up">
+    <div className="animate-fade-in">
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-cyan-400/10 border border-cyan-400/20 rounded-full px-4 py-1.5 mb-6">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse-slow" />
-          <span className="text-cyan-400 text-xs font-mono tracking-widest uppercase">Secure Login</span>
+        <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 rounded-lg px-4 py-2 mb-6">
+          <div className="w-2 h-2 rounded-full bg-blue-400" />
+          <span className="text-blue-300 text-xs font-medium tracking-wide uppercase">Secure Authentication</span>
         </div>
-        <h1 className="text-2xl font-sans font-800 text-white leading-tight mb-3">
-          Verify your identity <br />
-          <span className="text-cyan-400"></span>
+        <h1 className="text-3xl font-bold text-white leading-tight mb-3">
+          Sign in with your phone
         </h1>
-        <p className="text-slate-400 text-sm font-mono leading-relaxed">
-          Enter your phone number. We'll send a one-time password via SMS.
+        <p className="text-sm text-slate-400 leading-relaxed">
+          Enter your phone number to receive a one-time verification code via SMS.
         </p>
       </div>
 
       {/* Phone Input */}
       <div className="mb-5">
-        <label className="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-2">
+        <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-3">
           Phone Number
         </label>
         <div className="flex gap-2">
@@ -68,30 +67,42 @@ const PhoneStep: React.FC<PhoneStepProps> = ({
           <div className="relative">
             <button
               onClick={() => setDdOpen(!ddOpen)}
-              className="h-14 px-3 bg-slate-800/60 border border-slate-700/60 hover:border-cyan-400/40 rounded-xl text-white font-mono text-sm flex items-center gap-1.5 transition-all duration-200 min-w-20"
+              className="h-12 px-3 bg-slate-800/40 border border-slate-700/60 hover:border-slate-600/60 
+                         rounded-lg text-white text-sm flex items-center gap-2 transition-all duration-200 min-w-24
+                         focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
               <span className="text-lg">{selected.flag}</span>
-              <span className="text-slate-300">{selected.code}</span>
-              <svg className={`w-3 h-3 text-slate-500 transition-transform ${ddOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <span className="text-slate-200 font-medium">{selected.code}</span>
+              <svg className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${ddOpen ? 'rotate-180' : ''}`} 
+                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {ddOpen && (
-              <div className="absolute top-full left-0 mt-1 z-50 bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-2xl w-48">
-                {COUNTRY_CODES.map(c => (
-                  <button
-                    key={c.code}
-                    onClick={() => handleCodeSelect(c.code)}
-                    className={`w-full px-4 py-2.5 flex items-center gap-3 text-sm font-mono hover:bg-slate-800 transition-colors ${
-                      c.code === selectedCode ? 'text-cyan-400 bg-slate-800/50' : 'text-slate-300'
-                    }`}
-                  >
-                    <span className="text-base">{c.flag}</span>
-                    <span>{c.name}</span>
-                    <span className="ml-auto text-slate-500">{c.code}</span>
-                  </button>
-                ))}
-              </div>
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setDdOpen(false)}
+                />
+                <div className="absolute top-full left-0 mt-2 z-50 bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 
+                                rounded-lg overflow-hidden shadow-2xl w-52">
+                  <div className="max-h-64 overflow-y-auto">
+                    {COUNTRY_CODES.map(c => (
+                      <button
+                        key={c.code}
+                        onClick={() => handleCodeSelect(c.code)}
+                        className={`w-full px-4 py-3 flex items-center gap-3 text-sm hover:bg-slate-800/60 transition-colors ${
+                          c.code === selectedCode ? 'text-blue-300 bg-slate-800/40' : 'text-slate-300'
+                        }`}
+                      >
+                        <span className="text-lg">{c.flag}</span>
+                        <span className="font-medium">{c.name}</span>
+                        <span className="ml-auto text-slate-500 font-mono text-xs">{c.code}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
             )}
           </div>
 
@@ -101,30 +112,41 @@ const PhoneStep: React.FC<PhoneStepProps> = ({
             value={localNumber}
             onChange={e => handleNumberChange(e.target.value)}
             placeholder="98765 43210"
-            className="flex-1 h-14 px-5 bg-slate-800/60 border border-slate-700/60 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 rounded-xl text-white font-mono text-base placeholder-slate-600 outline-none transition-all duration-200"
+            className="flex-1 h-12 px-4 bg-slate-800/40 border border-slate-700/60 
+                       focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 
+                       rounded-lg text-white text-sm placeholder-slate-500 outline-none transition-all duration-200"
           />
         </div>
 
         {phoneNumber && (
-          <p className="mt-2 text-xs font-mono text-slate-500">
-            Full number: <span className="text-cyan-400/70">{phoneNumber}</span>
+          <p className="mt-3 text-xs text-slate-500 flex items-center gap-2">
+            <svg className="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Complete number: <span className="text-slate-400 font-medium">{phoneNumber}</span>
           </p>
         )}
       </div>
 
       {error && (
-        <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-2">
-          <svg className="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-red-400 text-xs font-mono">{error}</p>
+        <div className="mb-5 p-4 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-3">
+          <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 mt-0.5">
+            <svg className="w-3 h-3 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <p className="text-red-300 text-sm">{error}</p>
         </div>
       )}
 
       <button
         onClick={onSend}
         disabled={loading || !localNumber}
-        className="w-full h-14 bg-cyan-400 hover:bg-cyan-300 disabled:bg-slate-700 disabled:text-slate-500 text-slate-900 font-sans font-700 text-base rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-cyan-400/20 hover:shadow-cyan-400/40 disabled:shadow-none"
+        className="w-full h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 
+                   disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:border disabled:border-slate-700/50
+                   text-white font-semibold text-sm rounded-lg transition-all duration-200 
+                   flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25 
+                   hover:shadow-xl hover:shadow-blue-500/30 disabled:shadow-none"
       >
         {loading ? (
           <>
@@ -132,11 +154,11 @@ const PhoneStep: React.FC<PhoneStepProps> = ({
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Sending OTP...
+            Sending code...
           </>
         ) : (
           <>
-            Send OTP
+            Send verification code
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -144,9 +166,13 @@ const PhoneStep: React.FC<PhoneStepProps> = ({
         )}
       </button>
 
-      <p className="mt-6 text-center text-xs font-mono text-slate-600">
-        Protected by Firebase Authentication & reCAPTCHA
-      </p>
+      <div className="mt-6 flex items-center gap-2 justify-center text-xs text-slate-500">
+        <svg className="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span>Protected by Firebase & reCAPTCHA</span>
+      </div>
     </div>
   );
 };
